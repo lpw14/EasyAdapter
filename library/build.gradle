@@ -1,14 +1,11 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
-
-group = 'com.yuyang.library'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 31
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 28
+        minSdkVersion 21
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 
@@ -28,19 +25,17 @@ android {
 }
 
 dependencies {
-    api 'com.android.support:appcompat-v7:28.0.0'
-    api("com.android.support:recyclerview-v7:28.0.0")
+    api 'androidx.appcompat:appcompat:1.4.2'
+    api 'androidx.recyclerview:recyclerview:1.2.1'
 }
 
-task androidJavadocs(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
+def buildNumber() {
+    return System.getenv("BUILD_NUMBER") as Integer ?: 0
 }
 
-task androidJavadocsJar(type: Jar) {
-    classifier = 'javadoc'
-    from androidJavadocs.destinationDir
+ext {
+    publishGroupId = 'com.github.smuyyh'
+    publishArtifactId = 'EasyAdapter'
+    publishVersion = "1.3.0.${buildNumber()}"
 }
-task androidSourcesJar(type: Jar) {
-    classifier = 'sources'
-    from android.sourceSets.main.java.srcDirs
-}
+apply from: 'https://raw.githubusercontent.com/ZenMX/mavenPublisher/master/publish.gradle'
